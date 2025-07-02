@@ -1,4 +1,4 @@
-# Flutter Reader (项目代号)
+# Flutter Reader
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg) ![License](https://img.shields.io/badge/License-MIT-green.svg) ![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20Android-lightgrey.svg)
 
