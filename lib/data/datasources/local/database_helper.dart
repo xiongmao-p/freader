@@ -5,7 +5,7 @@ import 'dart:io';
 
 class DatabaseHelper {
   static const _databaseName = "MyDatabase.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 2;
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -28,7 +28,16 @@ class DatabaseHelper {
       path,
       version: _databaseVersion,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
+  }
+
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('''
+        ALTER TABLE book_sources ADD COLUMN sourceType INTEGER NOT NULL DEFAULT 0
+      ''');
+    }
   }
 
   // SQL code to create the database table
@@ -39,6 +48,7 @@ class DatabaseHelper {
         name TEXT NOT NULL,
         url TEXT NOT NULL,
         rules TEXT NOT NULL,
+        sourceType INTEGER NOT NULL DEFAULT 0,
         isEnabled BOOLEAN NOT NULL,
         lastUpdated INTEGER NOT NULL,
         createdAt INTEGER NOT NULL
@@ -57,6 +67,7 @@ class DatabaseHelper {
         currentChapterId INTEGER,
         readingProgress REAL NOT NULL,
         addedAt INTEGER NOT NULL,
+        lastReadPosition REAL NOT NULL DEFAULT 0.0,
         FOREIGN KEY (sourceId) REFERENCES book_sources (id)
       )
       ''');

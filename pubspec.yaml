@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: # 添加国际化支持
+    sdk: flutter
+  intl: any # flutter_localizations 的依赖
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -38,11 +41,13 @@ dependencies:
   go_router: ^14.2.0
   sqflite: ^2.3.3+1
   dio: ^5.5.0+1
-  html: ^0.15.4
+  html: ^0.15.6
   flutter_js: ^0.8.5
   get_it: ^7.7.0
   path_provider: ^2.0.11
   equatable: ^2.0.5
+  shared_preferences: ^2.5.3
+  json_path: ^0.7.6
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +65,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true # 开启代码生成
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,0 +1,62 @@
+{
+  "@@locale": "en",
+  "bookshelf": "Bookshelf",
+  "addBook": "Add Book",
+  "search": "Search",
+  "searchBooks": "Search books...",
+  "noBooksFound": "No books found.",
+  "noBooksYet": "No books on the shelf yet.",
+  "welcomeToFReader": "Welcome to FReader!",
+  "deleteBook": "Delete Book",
+  "areYouSureYouWantToDeleteThisBook": "Are you sure you want to delete this book?",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "bookAddedSuccessfully": "Book added successfully!",
+  "bookDeletedSuccessfully": "Book deleted successfully!",
+  "failedToAddBook": "Failed to add book: {error}",
+  "reader": "Reader",
+  "settings": "Settings",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "fontSize": "Font Size",
+  "chapters": "Chapters",
+  "bookSources": "Book Sources",
+  "addBookSource": "Add Book Source",
+  "editBookSource": "Edit Book Source",
+  "bookSourceName": "Name",
+  "bookSourceUrl": "URL",
+  "save": "Save",
+  "noResultsFound": "No results found.",
+  "startSearchingToAddBooks": "Start searching to add books.",
+  "noBookSourcesYet": "No book sources yet.",
+  "welcomeToBookSources": "Welcome to Book Sources!",
+  "pleaseEnterAName": "Please enter a name",
+  "pleaseEnterAUrl": "Please enter a URL",
+  "rulesJson": "Rules (JSON)",
+  "deleteBookSource": "Delete Book Source",
+  "areYouSureYouWantToDeleteSource": "Are you sure you want to delete \"{sourceName}\"?",
+  "bookSourceType": "Source Type",
+  "html": "HTML",
+  "api": "API",
+  "@areYouSureYouWantToDeleteSource": {
+    "description": "Confirmation message for deleting a book source",
+    "placeholders": {
+      "sourceName": {
+        "type": "String",
+        "example": "My Source"
+      }
+    }
+  },
+  "loadingChapter": "Loading chapter...",
+  "fontSizeLabel": "Font Size: {fontSizeValue}",
+  "@fontSizeLabel": {
+    "description": "Label for font size slider",
+    "placeholders": {
+      "fontSizeValue": {
+        "type": "String",
+        "example": "16.0"
+      }
+    }
+  }
+}

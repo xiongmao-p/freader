@@ -1,4 +1,4 @@
-import 'package:reader/data/models/chapter.dart';
+import 'package:reader/domain/entities/chapter.dart';
 import 'package:reader/domain/repositories/chapter_repository.dart';
 
 class GetChapters {

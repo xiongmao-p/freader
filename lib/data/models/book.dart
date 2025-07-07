@@ -10,6 +10,7 @@ class Book {
   final int? currentChapterId;
   final double readingProgress;
   final int addedAt;
+  final double lastReadPosition;
 
   Book({
     this.id,
@@ -23,6 +24,7 @@ class Book {
     this.currentChapterId,
     required this.readingProgress,
     required this.addedAt,
+    this.lastReadPosition = 0.0,
   });
 
   Map<String, dynamic> toMap() {
@@ -38,6 +40,7 @@ class Book {
       'currentChapterId': currentChapterId,
       'readingProgress': readingProgress,
       'addedAt': addedAt,
+      'lastReadPosition': lastReadPosition,
     };
   }
 
@@ -54,6 +57,7 @@ class Book {
       currentChapterId: map['currentChapterId'],
       readingProgress: map['readingProgress'],
       addedAt: map['addedAt'],
+      lastReadPosition: map['lastReadPosition'] ?? 0.0,
     );
   }
 }

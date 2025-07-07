@@ -1,4 +1,4 @@
-import 'package:reader/data/models/book.dart';
+import 'package:reader/domain/entities/book.dart';
 import 'package:reader/domain/repositories/book_repository.dart';
 
 class GetBooks {

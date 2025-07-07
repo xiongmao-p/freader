@@ -1,12 +1,12 @@
 import 'package:reader/domain/entities/book.dart';
 import 'package:reader/domain/repositories/book_repository.dart';
 
-class UpdateBook {
+class SearchBooks {
   final BookRepository repository;
 
-  UpdateBook(this.repository);
+  SearchBooks(this.repository);
 
-  Future<int> call(Book book) {
-    return repository.updateBook(book);
+  Future<List<Book>> call(String query) async {
+    return await repository.searchBooks(query);
   }
 }

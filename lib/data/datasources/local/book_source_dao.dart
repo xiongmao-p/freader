@@ -45,4 +45,16 @@ class BookSourceDao {
       return BookSource.fromMap(maps[i]);
     });
   }
+
+  Future<List<BookSource>> findEnabledBookSources() async {
+    Database db = await dbHelper.database;
+    List<Map<String, dynamic>> maps = await db.query(
+      'book_sources',
+      where: 'isEnabled = ?',
+      whereArgs: [1],
+    );
+    return List.generate(maps.length, (i) {
+      return BookSource.fromMap(maps[i]);
+    });
+  }
 }

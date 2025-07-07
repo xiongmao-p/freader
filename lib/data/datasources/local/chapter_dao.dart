@@ -10,6 +10,15 @@ class ChapterDao {
     return await db.insert('chapters', chapter.toMap());
   }
 
+  Future<void> insertChapters(List<Chapter> chapters) async {
+    Database db = await dbHelper.database;
+    Batch batch = db.batch();
+    for (var chapter in chapters) {
+      batch.insert('chapters', chapter.toMap());
+    }
+    await batch.commit(noResult: true);
+  }
+
   Future<int> updateChapter(Chapter chapter) async {
     Database db = await dbHelper.database;
     return await db.update(

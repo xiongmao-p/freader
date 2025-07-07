@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reader/generated/l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reader/core/di/injection_container.dart';
 import 'package:reader/presentation/features/book_source/bloc/book_source_bloc.dart';
@@ -15,7 +16,7 @@ class BookSourcePage extends StatelessWidget {
       create: (_) => sl<BookSourceBloc>()..add(LoadBookSources()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Book Sources'),
+          title: Text(AppLocalizations.of(context)!.bookSources),
           actions: [
             IconButton(
               icon: const Icon(Icons.add),
@@ -29,7 +30,9 @@ class BookSourcePage extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is BookSourceLoaded) {
               if (state.bookSources.isEmpty) {
-                return const Center(child: Text('No book sources yet.'));
+                return Center(
+                  child: Text(AppLocalizations.of(context)!.noBookSourcesYet),
+                );
               }
               return ListView.builder(
                 itemCount: state.bookSources.length,
@@ -59,7 +62,9 @@ class BookSourcePage extends StatelessWidget {
             } else if (state is BookSourceError) {
               return Center(child: Text(state.message));
             }
-            return const Center(child: Text('Welcome to Book Sources!'));
+            return Center(
+              child: Text(AppLocalizations.of(context)!.welcomeToBookSources),
+            );
           },
         ),
       ),
@@ -74,43 +79,87 @@ class BookSourcePage extends StatelessWidget {
     final _nameController = TextEditingController(text: bookSource?.name);
     final _urlController = TextEditingController(text: bookSource?.url);
     final _rulesController = TextEditingController(text: bookSource?.rules);
+    int _sourceType = bookSource?.sourceType ?? 0;
 
     showDialog(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
           title: Text(
-            bookSource == null ? 'Add Book Source' : 'Edit Book Source',
+            bookSource == null
+                ? AppLocalizations.of(dialogContext)!.addBookSource
+                : AppLocalizations.of(dialogContext)!.editBookSource,
           ),
           content: Form(
             key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a name' : null,
-                ),
-                TextFormField(
-                  controller: _urlController,
-                  decoration: const InputDecoration(labelText: 'URL'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a URL' : null,
-                ),
-                TextFormField(
-                  controller: _rulesController,
-                  decoration: const InputDecoration(labelText: 'Rules (JSON)'),
-                  maxLines: 3,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(
+                        dialogContext,
+                      )!.bookSourceName,
+                    ),
+                    validator: (value) => value!.isEmpty
+                        ? AppLocalizations.of(dialogContext)!.pleaseEnterAName
+                        : null,
+                  ),
+                  TextFormField(
+                    controller: _urlController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(
+                        dialogContext,
+                      )!.bookSourceUrl,
+                    ),
+                    validator: (value) => value!.isEmpty
+                        ? AppLocalizations.of(dialogContext)!.pleaseEnterAUrl
+                        : null,
+                  ),
+                  StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                      return DropdownButtonFormField<int>(
+                        value: _sourceType,
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(
+                            context,
+                          )!.bookSourceType,
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 0,
+                            child: Text(AppLocalizations.of(context)!.html),
+                          ),
+                          DropdownMenuItem(
+                            value: 1,
+                            child: Text(AppLocalizations.of(context)!.api),
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _sourceType = value!;
+                          });
+                        },
+                      );
+                    },
+                  ),
+                  TextFormField(
+                    controller: _rulesController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(dialogContext)!.rulesJson,
+                    ),
+                    maxLines: 5,
+                  ),
+                ],
+              ),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(dialogContext)!.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -120,6 +169,7 @@ class BookSourcePage extends StatelessWidget {
                     name: _nameController.text,
                     url: _urlController.text,
                     rules: _rulesController.text,
+                    sourceType: _sourceType,
                     isEnabled: bookSource?.isEnabled ?? true,
                     lastUpdated: DateTime.now().millisecondsSinceEpoch,
                     createdAt:
@@ -131,44 +181,49 @@ class BookSourcePage extends StatelessWidget {
                       AddBookSourceEvent(newBookSource),
                     );
                   } else {
-                    context
-                        .read<BookSourceBloc>()
-                        .add(UpdateBookSourceEvent(newBookSource));
+                    context.read<BookSourceBloc>().add(
+                      UpdateBookSourceEvent(newBookSource),
+                    );
                   }
-                  
-                    void _showDeleteConfirmationDialog(
-                        BuildContext context, BookSource bookSource) {
-                      showDialog(
-                        context: context,
-                        builder: (dialogContext) {
-                          return AlertDialog(
-                            title: const Text('Delete Book Source'),
-                            content:
-                                Text('Are you sure you want to delete "${bookSource.name}"?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(dialogContext).pop(),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  context
-                                      .read<BookSourceBloc>()
-                                      .add(DeleteBookSourceEvent(bookSource.id!));
-                                  Navigator.of(dialogContext).pop();
-                                },
-                                child: const Text('Delete'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  }
+
                   Navigator.of(dialogContext).pop();
                 }
               },
-              child: const Text('Save'),
+              child: Text(AppLocalizations.of(dialogContext)!.save),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showDeleteConfirmationDialog(
+    BuildContext context,
+    BookSource bookSource,
+  ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(dialogContext)!.deleteBookSource),
+          content: Text(
+            AppLocalizations.of(
+              dialogContext,
+            )!.areYouSureYouWantToDeleteSource(bookSource.name),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(AppLocalizations.of(dialogContext)!.cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                context.read<BookSourceBloc>().add(
+                  DeleteBookSourceEvent(bookSource.id!),
+                );
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(AppLocalizations.of(dialogContext)!.delete),
             ),
           ],
         );

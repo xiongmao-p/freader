@@ -3,6 +3,7 @@ class BookSource {
   final String name;
   final String url;
   final String rules; // JSON string
+  final int sourceType; // 0 for HTML, 1 for API
   final bool isEnabled;
   final int lastUpdated;
   final int createdAt;
@@ -12,6 +13,7 @@ class BookSource {
     required this.name,
     required this.url,
     required this.rules,
+    this.sourceType = 0,
     required this.isEnabled,
     required this.lastUpdated,
     required this.createdAt,
@@ -22,6 +24,7 @@ class BookSource {
     String? name,
     String? url,
     String? rules,
+    int? sourceType,
     bool? isEnabled,
     int? lastUpdated,
     int? createdAt,
@@ -31,6 +34,7 @@ class BookSource {
       name: name ?? this.name,
       url: url ?? this.url,
       rules: rules ?? this.rules,
+      sourceType: sourceType ?? this.sourceType,
       isEnabled: isEnabled ?? this.isEnabled,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       createdAt: createdAt ?? this.createdAt,
@@ -43,6 +47,7 @@ class BookSource {
       'name': name,
       'url': url,
       'rules': rules,
+      'sourceType': sourceType,
       'isEnabled': isEnabled ? 1 : 0,
       'lastUpdated': lastUpdated,
       'createdAt': createdAt,
@@ -55,6 +60,7 @@ class BookSource {
       name: map['name'],
       url: map['url'],
       rules: map['rules'],
+      sourceType: map['sourceType'] ?? 0,
       isEnabled: map['isEnabled'] == 1,
       lastUpdated: map['lastUpdated'],
       createdAt: map['createdAt'],
